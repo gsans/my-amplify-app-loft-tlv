@@ -1,4 +1,10 @@
 {
     "AppSyncApiName": "CryptoGraphQL",
-    "DynamoDBBillingMode": "PAY_PER_REQUEST"
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authmyamplifyapp4a795831",
+            "Outputs.UserPoolId"
+        ]
+    }
 }
