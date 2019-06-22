@@ -1,0 +1,7 @@
+type Coin @model {
+  id: ID!
+  clientId: ID
+  name: String!
+  symbol: String!
+  price: Float!
+}
