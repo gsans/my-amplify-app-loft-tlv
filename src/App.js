@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useReducer } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import { API, graphqlOperation } from 'aws-amplify'
 import { withAuthenticator } from 'aws-amplify-react'
 import { listCoins } from './graphql/queries'
 import { createCoin as CreateCoin } from './graphql/mutations'
+import { onCreateCoin, onDeleteCoin } from './graphql/subscriptions'
 import './App.css';
 
 // import uuid to create a unique client ID
@@ -23,6 +24,10 @@ function reducer(state, action) {
       return { ...state, [action.key]: action.value }
     case 'CLEARINPUT':
         return { ...state, name: '', price: '', symbol: '' }
+    case 'ADDCOIN':
+      return { ...state, coins: [...state.coins, action.coin] }
+    case 'REMOVECOIN':
+      return { ...state, coins: [...state.coins.filter(c=>c.id !== action.coin.id)] }
     default:
       return state
   }
@@ -33,6 +38,8 @@ function App() {
 
   useEffect(() => {
     getData()
+    subscribeToOnCreateCoin()
+    subscribeToOnDeleteCoin()
   }, [])
 
   async function getData() {
@@ -62,6 +69,30 @@ function App() {
     } catch (err) {
       console.log('error creating coin...', err)
     }
+  }
+
+  async function subscribeToOnCreateCoin(handleSubscriptionFunction) {
+    const subscription = await API.graphql(graphqlOperation(onCreateCoin))
+    .subscribe({
+      next: (data) => {
+        const coin = data.value.data.onCreateCoin
+        if (coin.clientId === CLIENT_ID) return
+        dispatch({ type: 'ADDCOIN', coin })
+      }
+    })
+    return () => subscription.unsubscribe()
+  }
+
+  async function subscribeToOnDeleteCoin(handleSubscriptionFunction) {
+    const subscription = await API.graphql(graphqlOperation(onDeleteCoin))
+    .subscribe({
+      next: (data) => {
+        const coin = data.value.data.onDeleteCoin
+        //if (coin.clientId === CLIENT_ID) return
+        dispatch({ type: 'REMOVECOIN', coin })
+      }
+    })
+    return () => subscription.unsubscribe()
   }
 
   // change state then user types into input
