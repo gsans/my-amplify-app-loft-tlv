@@ -125,42 +125,55 @@ function App() {
 
   // add UI with event handlers to manage user input
   return (
-    <div><form autoComplete='off'>
-      <input
-        name='name'
-        placeholder='name'
-        onChange={onChange}
-        value={state.name}
-        autoComplete='off'
-      />
-      <input
-        name='price'
-        placeholder='price'
-        onChange={onChange}
-        value={state.price}
-        autoComplete='off'
-      />
-      <input
-        name='symbol'
-        placeholder='symbol'
-        onChange={onChange}
-        value={state.symbol}
-        autoComplete='off'
-      />
-      <button type="button" onClick={createCoin}>Create Coin</button>
-      </form>
-      { state.loading && (<div>Loading...</div>)}
-      {
-        state.coins.map((c, i) => (
-          <div key={i}>
-            <h2>{c.name}</h2>
-            <h4>{c.symbol}</h4>
-            <p>{c.price}</p>
-          </div>
-        ))
-      }
-      { false && (<div><button onClick={addToStorage}>Add To Storage</button></div>)}
+    <div className="app">
+    <div className="app-header">
+        <div className="app-logo">
+            <img src="https://aws-amplify.github.io/images/Logos/Amplify-Logo-White.svg" alt="AWS Amplify" />
+        </div>
+        <h1>Welcome to the Amplify Framework</h1>
     </div>
+    <div className="app-body">
+      <div><form autoComplete='off'>
+        <input
+          name='name'
+          placeholder='name'
+          onChange={onChange}
+          value={state.name}
+          autoComplete='off'
+          style={{width: '200px'}}
+        />
+        <input
+          name='price'
+          placeholder='price'
+          onChange={onChange}
+          value={state.price}
+          autoComplete='off'
+        />
+        <input
+          name='symbol'
+          placeholder='symbol'
+          onChange={onChange}
+          value={state.symbol}
+          autoComplete='off'
+        />
+        <button type="button" onClick={createCoin}>Create Coin</button>
+        </form>
+        { state.loading && (<div>Loading...</div>)}
+        <div className="card-container">
+          {
+            state.coins.map((c, i) => (
+              <div className="card" key={i}>
+                <div className="name">{c.name}</div>
+                <div className="price">{c.price}</div>
+                <div className="symbol">{c.symbol}</div>
+              </div>
+            ))
+          }
+        </div>
+        { false && (<div><button onClick={addToStorage}>Add To Storage</button></div>)}
+      </div>
+    </div>
+  </div>
   )
 }
 
