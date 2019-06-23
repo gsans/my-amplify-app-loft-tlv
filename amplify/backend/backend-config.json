@@ -39,5 +39,11 @@
 			"providerPlugin": "awscloudformation",
 			"build": true
 		}
+	},
+	"storage": {
+		"s37170457e": {
+			"service": "S3",
+			"providerPlugin": "awscloudformation"
+		}
 	}
 }

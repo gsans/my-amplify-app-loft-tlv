@@ -5,6 +5,7 @@ import { listCoins } from './graphql/queries'
 import { createCoin as CreateCoin } from './graphql/mutations'
 import { onCreateCoin, onDeleteCoin } from './graphql/subscriptions'
 import './App.css';
+import { Storage } from 'aws-amplify'
 
 // import uuid to create a unique client ID
 import uuid from 'uuid/v4'
@@ -31,6 +32,17 @@ function reducer(state, action) {
     default:
       return state
   }
+}
+
+async function addToStorage() {
+  await Storage.put('javascript/MyReactComponent.js', `
+    import React from 'react'
+    const App = () => (
+      <p>Hello World</p>
+    )
+    export default App
+  `)
+  console.log('data stored in S3!')
 }
 
 function App() {
@@ -134,8 +146,9 @@ function App() {
         onChange={onChange}
         value={state.symbol}
         autoComplete='off'
-      />
+      />/
       <button type="button" onClick={createCoin}>Create Coin</button>
+      </form>
       { state.loading && (<div>Loading...</div>)}
       {
         state.coins.map((c, i) => (
@@ -146,7 +159,8 @@ function App() {
           </div>
         ))
       }
-    </form></div>
+      <div><button onClick={addToStorage}>Add To Storage</button></div>
+    </div>
   )
 }
 
