@@ -118,6 +118,7 @@ input {
   -webkit-justify-content: center;
   -webkit-align-items: center;
   flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .card {
@@ -142,10 +143,10 @@ input {
 }
 
 .name {
-
+  font-style: italic;
 }
 .symbol {
-
+  color: #999;
 }
 .price {
   font-weight: bold;
