@@ -28,3 +28,26 @@ export const listCoins = `query ListCoins(
   }
 }
 `;
+export const getNote = `query GetNote($id: ID!) {
+  getNote(id: $id) {
+    id
+    title
+    description
+  }
+}
+`;
+export const listNotes = `query ListNotes(
+  $filter: ModelNoteFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listNotes(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      title
+      description
+    }
+    nextToken
+  }
+}
+`;

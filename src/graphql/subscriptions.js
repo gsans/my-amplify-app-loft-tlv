@@ -31,3 +31,27 @@ export const onDeleteCoin = `subscription OnDeleteCoin {
   }
 }
 `;
+export const onCreateNote = `subscription OnCreateNote {
+  onCreateNote {
+    id
+    title
+    description
+  }
+}
+`;
+export const onUpdateNote = `subscription OnUpdateNote {
+  onUpdateNote {
+    id
+    title
+    description
+  }
+}
+`;
+export const onDeleteNote = `subscription OnDeleteNote {
+  onDeleteNote {
+    id
+    title
+    description
+  }
+}
+`;
