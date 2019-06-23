@@ -37,12 +37,12 @@ function App() {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   useEffect(() => {
-    getData()
+    getDataGraphQL()
     subscribeToOnCreateCoin()
     subscribeToOnDeleteCoin()
   }, [])
 
-  async function getData() {
+  async function getDataGraphQL() {
     try {
       const coinData = await API.graphql(graphqlOperation(listCoins))
       console.log('data from API: ', coinData)
@@ -58,13 +58,13 @@ function App() {
     const coin = {
       name, price: parseFloat(price), symbol, clientId: CLIENT_ID
     }
-    const coins = [...state.coins, coin]
-    dispatch({ type: 'SETCOINS', coins })
-    console.log('coin:', coin)
     
     try {
-      await API.graphql(graphqlOperation(CreateCoin, { input: coin }))
+      const newCoin = await API.graphql(graphqlOperation(CreateCoin, { input: coin }))
       console.log('item created!')
+      const coins = [...state.coins, newCoin.data.createCoin]
+      dispatch({ type: 'SETCOINS', coins })
+
       dispatch({ type: 'CLEARINPUT' }) //clear input
     } catch (err) {
       console.log('error creating coin...', err)
