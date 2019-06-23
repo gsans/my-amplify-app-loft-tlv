@@ -49,7 +49,7 @@ function App() {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   useEffect(() => {
-    getDataREST()
+    getDataGraphQL()
     subscribeToOnCreateCoin()
     subscribeToOnDeleteCoin()
   }, [])
@@ -146,7 +146,7 @@ function App() {
         onChange={onChange}
         value={state.symbol}
         autoComplete='off'
-      />/
+      />
       <button type="button" onClick={createCoin}>Create Coin</button>
       </form>
       { state.loading && (<div>Loading...</div>)}
@@ -159,7 +159,7 @@ function App() {
           </div>
         ))
       }
-      <div><button onClick={addToStorage}>Add To Storage</button></div>
+      { false && (<div><button onClick={addToStorage}>Add To Storage</button></div>)}
     </div>
   )
 }
