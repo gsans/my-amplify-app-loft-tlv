@@ -12,14 +12,14 @@ const CLIENT_ID = uuid()
 
 // create initial state
 const initialState = {
-  name: '', price: '', symbol: '', coins: []
+  name: '', price: '', symbol: '', coins: [], loading: true
 }
 
 // create reducer to update state
 function reducer(state, action) {
   switch(action.type) {
     case 'SETCOINS':
-      return { ...state, coins: action.coins }
+      return { ...state, coins: action.coins, loading: false }
     case 'SETINPUT':
       return { ...state, [action.key]: action.value }
     case 'CLEARINPUT':
@@ -37,7 +37,7 @@ function App() {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   useEffect(() => {
-    getDataGraphQL()
+    getDataREST()
     subscribeToOnCreateCoin()
     subscribeToOnDeleteCoin()
   }, [])
@@ -47,6 +47,17 @@ function App() {
       const coinData = await API.graphql(graphqlOperation(listCoins))
       console.log('data from API: ', coinData)
       dispatch({ type: 'SETCOINS', coins: coinData.data.listCoins.items })
+    } catch (err) {
+      console.log('error fetching data..', err)
+    }
+  }
+
+  async function getDataREST() {
+    try {
+      // const data = await API.get('cryptoapi', '/coins')
+      const data = await API.get('cryptoapi', '/coins?limit=3&start=0')
+      console.log('data from Lambda REST API: ', data)
+      dispatch({ type: 'SETCOINS', coins: data.coins })
     } catch (err) {
       console.log('error fetching data..', err)
     }
@@ -125,6 +136,7 @@ function App() {
         autoComplete='off'
       />
       <button type="button" onClick={createCoin}>Create Coin</button>
+      { state.loading && (<div>Loading...</div>)}
       {
         state.coins.map((c, i) => (
           <div key={i}>
