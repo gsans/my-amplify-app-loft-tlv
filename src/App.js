@@ -2,7 +2,7 @@ import React, { useEffect, useReducer } from 'react'
 import { API, graphqlOperation } from 'aws-amplify'
 import { withAuthenticator } from 'aws-amplify-react'
 import { listCoins } from './graphql/queries'
-import { createCoin as CreateCoin } from './graphql/mutations'
+import { createCoin as CreateCoin, deleteCoin as DeleteCoin } from './graphql/mutations'
 import { onCreateCoin, onDeleteCoin } from './graphql/subscriptions'
 import './App.css';
 import { Storage } from 'aws-amplify'
@@ -95,6 +95,17 @@ function App() {
     }
   }
 
+  async function deleteCoin(coin) {
+    try {
+      debugger
+      const { id } = coin
+      await API.graphql(graphqlOperation(DeleteCoin, { input: {id} }))
+      dispatch({ type: 'REMOVECOIN', coin })
+    } catch (err) {
+      console.log('error deleting coin...', err)
+    } 
+  }
+
   async function subscribeToOnCreateCoin(handleSubscriptionFunction) {
     const subscription = await API.graphql(graphqlOperation(onCreateCoin))
     .subscribe({
@@ -164,6 +175,7 @@ function App() {
           {
             state.coins.map((c, i) => (
               <div className="card" key={i}>
+                <div className="remove"><button onClick={() => deleteCoin(c)} className='button'>Delete</button></div>
                 <div className="name">{c.name}</div>
                 <div className="price">{c.price}</div>
                 <div className="symbol">{c.symbol}</div>

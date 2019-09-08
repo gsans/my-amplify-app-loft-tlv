@@ -172,3 +172,20 @@ select
   -webkit-appearance:none;
   box-shadow: none !important;
 }
+
+.remove {
+  top: -15px;
+  position: relative;
+  align-self: flex-end;
+}
+
+.remove button {
+  background-color: #DD3F5B;
+  color: white;
+  border-radius: 31px;
+  border: 0px;
+  margin: 2px -11px -0px;
+  height: 10px;
+  line-height: 1px;
+  font-size: 11px;
+}
