@@ -153,4 +153,22 @@ input {
   font-size: 2em;
 }
 
-
+/* remove blue highlight */
+textarea:hover, 
+input:hover:not([type="checkbox"]), 
+textarea:active, 
+input:active:not([type="checkbox"]), 
+textarea:focus, 
+input:focus:not([type="checkbox"]),
+button:focus,
+button:active,
+button:hover,
+label:focus,
+.btn:active,
+.btn.active,
+select
+{
+  outline:0px !important;
+  -webkit-appearance:none;
+  box-shadow: none !important;
+}

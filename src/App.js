@@ -24,8 +24,9 @@ function reducer(state, action) {
     case 'SETINPUT':
       return { ...state, [action.key]: action.value }
     case 'CLEARINPUT':
-        return { ...state, name: '', price: '', symbol: '' }
+      return { ...state, name: '', price: '', symbol: '' }
     case 'ADDCOIN':
+      if (state.coins.some(c => c.id == action.coin.id)) return;
       return { ...state, coins: [...state.coins, action.coin] }
     case 'REMOVECOIN':
       return { ...state, coins: [...state.coins.filter(c=>c.id !== action.coin.id)] }
